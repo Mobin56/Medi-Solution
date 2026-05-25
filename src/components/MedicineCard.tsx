@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Pill, Building2, Tag, ArrowRight } from "lucide-react";
+import { useLanguage } from "./LanguageProvider";
 import type { Medicine } from "@/lib/types";
 
 interface MedicineCardProps {
@@ -11,6 +12,7 @@ interface MedicineCardProps {
 }
 
 export default function MedicineCard({ medicine, index = 0 }: MedicineCardProps) {
+  const { t } = useLanguage();
   const typeColors: Record<string, string> = {
     Tablet: "bg-primary/10 text-primary",
     Capsule: "bg-secondary/10 text-secondary",
@@ -66,10 +68,10 @@ export default function MedicineCard({ medicine, index = 0 }: MedicineCardProps)
               <span className="text-lg font-bold text-primary dark:text-primary-light">
                 ৳{medicine.price.unit_price.toFixed(2)}
               </span>
-              <span className="text-xs text-text-light dark:text-dark-text-secondary ml-1">/unit</span>
+              <span className="text-xs text-text-light dark:text-dark-text-secondary ml-1">{t("common_per_unit")}</span>
             </div>
             <span className="flex items-center gap-1 text-sm text-primary dark:text-primary-light font-medium group-hover:gap-2 transition-all">
-              Details <ArrowRight className="w-4 h-4" />
+              {t("common_view_details")} <ArrowRight className="w-4 h-4" />
             </span>
           </div>
         </div>

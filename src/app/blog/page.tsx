@@ -4,12 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { BookOpen, Clock, User, ChevronRight } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { blogPosts } from "@/lib/data";
 
 const blogCategories = ["All", "Drug Awareness", "Health Tips", "Medicine Safety", "Healthcare Education"];
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const { t } = useLanguage();
 
   const filtered = activeCategory === "All"
     ? blogPosts
@@ -22,10 +24,10 @@ export default function BlogPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <AnimatedSection className="text-center mb-10">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
-              Medical Blog
+              {t("blog_title")}
             </h1>
             <p className="text-text-light dark:text-dark-text-secondary max-w-2xl mx-auto">
-              Expert articles on medicine safety, health tips, and healthcare education
+              {t("blog_subtitle")}
             </p>
           </AnimatedSection>
 
@@ -77,7 +79,7 @@ export default function BlogPage() {
                           {post.author}
                         </span>
                         <span className="flex items-center gap-1 text-primary dark:text-primary-light font-medium">
-                          Read More <ChevronRight className="w-3 h-3" />
+                          {t("blog_read_more")} <ChevronRight className="w-3 h-3" />
                         </span>
                       </div>
                     </div>

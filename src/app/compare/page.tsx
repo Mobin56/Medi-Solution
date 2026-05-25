@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { Scale, Plus, X, Pill, AlertTriangle, DollarSign, Stethoscope, Building2 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { medicines } from "@/lib/data";
 import type { Medicine } from "@/lib/types";
 
 export default function ComparePage() {
   const [selected, setSelected] = useState<Medicine[]>([]);
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
 
@@ -39,10 +41,10 @@ export default function ComparePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <AnimatedSection className="text-center mb-10">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
-              Compare Medicines
+              {t("compare_title")}
             </h1>
             <p className="text-text-light dark:text-dark-text-secondary max-w-2xl mx-auto">
-              Compare price, dosage, side effects, and effectiveness of different medicines side by side
+              {t("compare_subtitle")}
             </p>
           </AnimatedSection>
 
@@ -75,7 +77,7 @@ export default function ComparePage() {
                       className="w-full h-full min-h-[160px] border-2 border-dashed border-border dark:border-dark-border rounded-2xl flex flex-col items-center justify-center gap-2 text-text-light dark:text-dark-text-secondary hover:border-primary hover:text-primary dark:hover:text-primary-light transition-colors"
                     >
                       <Plus className="w-8 h-8" />
-                      <span className="text-sm font-medium">Add Medicine</span>
+                      <span className="text-sm font-medium">{t("compare_add")}</span>
                     </button>
                   )}
                 </div>
@@ -92,7 +94,7 @@ export default function ComparePage() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search medicine to add..."
+                    placeholder={t("compare_search_placeholder")}
                     className="w-full px-4 py-3 bg-background dark:bg-dark-bg rounded-xl text-text-dark dark:text-dark-text outline-none"
                     autoFocus
                   />
@@ -113,9 +115,9 @@ export default function ComparePage() {
                       </button>
                     ))
                   ) : searchQuery.trim() ? (
-                    <div className="p-8 text-center text-text-light dark:text-dark-text-secondary text-sm">No medicines found</div>
+                    <div className="p-8 text-center text-text-light dark:text-dark-text-secondary text-sm">{t("compare_no_results")}</div>
                   ) : (
-                    <div className="p-8 text-center text-text-light dark:text-dark-text-secondary text-sm">Type to search medicines</div>
+                    <div className="p-8 text-center text-text-light dark:text-dark-text-secondary text-sm">{t("compare_type_to_search")}</div>
                   )}
                 </div>
               </div>
@@ -130,7 +132,7 @@ export default function ComparePage() {
                   <table className="w-full">
                     <thead>
                       <tr className="bg-background dark:bg-dark-bg">
-                        <th className="text-left px-5 py-4 text-sm font-semibold text-text-dark dark:text-dark-text w-40">Property</th>
+                        <th className="text-left px-5 py-4 text-sm font-semibold text-text-dark dark:text-dark-text w-40">{t("compare_property")}</th>
                         {selected.map((med) => (
                           <th key={med.id} className="text-left px-5 py-4 text-sm font-semibold text-text-dark dark:text-dark-text">
                             {med.medicine_name}
@@ -140,10 +142,10 @@ export default function ComparePage() {
                     </thead>
                     <tbody className="divide-y divide-border dark:divide-dark-border">
                       {[
-                        { label: "Generic Name", icon: Pill, key: "generic_name" as const },
-                        { label: "Company", icon: Building2, key: "company_name" as const },
-                        { label: "Type", icon: Pill, key: "type" as const },
-                        { label: "Category", icon: Scale, key: "category" as const },
+                        { label: t("compare_generic"), icon: Pill, key: "generic_name" as const },
+                        { label: t("compare_company"), icon: Building2, key: "company_name" as const },
+                        { label: t("compare_type"), icon: Pill, key: "type" as const },
+                        { label: t("compare_category"), icon: Scale, key: "category" as const },
                       ].map((row) => (
                         <tr key={row.label}>
                           <td className="px-5 py-3 text-sm font-medium text-text-dark dark:text-dark-text flex items-center gap-2">
@@ -160,7 +162,7 @@ export default function ComparePage() {
                       <tr>
                         <td className="px-5 py-3 text-sm font-medium text-text-dark dark:text-dark-text flex items-center gap-2">
                           <DollarSign className="w-4 h-4 text-primary" />
-                          Unit Price
+                          {t("compare_unit_price")}
                         </td>
                         {selected.map((med) => (
                           <td key={med.id} className="px-5 py-3 text-sm font-semibold text-primary dark:text-primary-light">
@@ -171,7 +173,7 @@ export default function ComparePage() {
                       <tr>
                         <td className="px-5 py-3 text-sm font-medium text-text-dark dark:text-dark-text flex items-center gap-2">
                           <DollarSign className="w-4 h-4 text-primary" />
-                          Strip Price
+                          {t("compare_strip_price")}
                         </td>
                         {selected.map((med) => (
                           <td key={med.id} className="px-5 py-3 text-sm text-text-light dark:text-dark-text-secondary">
@@ -182,7 +184,7 @@ export default function ComparePage() {
                       <tr>
                         <td className="px-5 py-3 text-sm font-medium text-text-dark dark:text-dark-text flex items-center gap-2">
                           <Stethoscope className="w-4 h-4 text-primary" />
-                          Adult Dosage
+                          {t("compare_adult_dosage")}
                         </td>
                         {selected.map((med) => (
                           <td key={med.id} className="px-5 py-3 text-sm text-text-light dark:text-dark-text-secondary">
@@ -193,7 +195,7 @@ export default function ComparePage() {
                       <tr>
                         <td className="px-5 py-3 text-sm font-medium text-text-dark dark:text-dark-text flex items-center gap-2">
                           <AlertTriangle className="w-4 h-4 text-warning" />
-                          Common Side Effects
+                          {t("compare_common_side")}
                         </td>
                         {selected.map((med) => (
                           <td key={med.id} className="px-5 py-3 text-sm text-text-light dark:text-dark-text-secondary">
@@ -204,7 +206,7 @@ export default function ComparePage() {
                       <tr>
                         <td className="px-5 py-3 text-sm font-medium text-text-dark dark:text-dark-text flex items-center gap-2">
                           <AlertTriangle className="w-4 h-4 text-danger" />
-                          Serious Side Effects
+                          {t("compare_serious_side")}
                         </td>
                         {selected.map((med) => (
                           <td key={med.id} className="px-5 py-3 text-sm text-text-light dark:text-dark-text-secondary">
@@ -223,7 +225,7 @@ export default function ComparePage() {
             <div className="text-center py-12">
               <Scale className="w-16 h-16 text-text-light/20 mx-auto mb-4" />
               <p className="text-text-light dark:text-dark-text-secondary">
-                Add at least 2 medicines to start comparing
+                {t("compare_hint")}
               </p>
             </div>
           )}

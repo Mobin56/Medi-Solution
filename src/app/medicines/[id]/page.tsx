@@ -22,11 +22,13 @@ import {
 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import MedicineCard from "@/components/MedicineCard";
+import { useLanguage } from "@/components/LanguageProvider";
 import { getMedicineById, getAlternativeMedicines } from "@/lib/data";
 
 export default function MedicineDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const medicine = getMedicineById(id);
+  const { t } = useLanguage();
 
   if (!medicine) {
     notFound();
@@ -53,7 +55,7 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
           className="inline-flex items-center gap-2 text-sm text-text-light dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary-light transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Medicines
+          {t("med_back")}
         </Link>
 
         {/* Header Card */}
@@ -90,7 +92,7 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
                 <div className="text-3xl font-bold text-primary dark:text-primary-light font-[family-name:var(--font-heading)]">
                   ৳{medicine.price.unit_price.toFixed(2)}
                 </div>
-                <div className="text-sm text-text-light dark:text-dark-text-secondary">per unit</div>
+                <div className="text-sm text-text-light dark:text-dark-text-secondary">{t("common_per_unit")}</div>
                 <div className="text-sm text-text-light dark:text-dark-text-secondary mt-1">
                   Strip: ৳{medicine.price.strip_price.toFixed(2)}
                 </div>
@@ -108,7 +110,7 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
           <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-6 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
               <FileText className="w-5 h-5 text-primary" />
-              About This Medicine
+              {t("med_about")}
             </h2>
             <p className="text-text-light dark:text-dark-text-secondary leading-relaxed mb-4">
               {medicine.description}
@@ -125,14 +127,14 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
           <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-6 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
               <Stethoscope className="w-5 h-5 text-primary" />
-              Dosage Information
+              {t("med_dosage")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { label: "Adult Dose", value: medicine.dosage.adult, icon: Heart },
-                { label: "Child Dose", value: medicine.dosage.child, icon: Baby },
-                { label: "Elderly Dose", value: medicine.dosage.elderly, icon: Stethoscope },
-                { label: "Special Instructions", value: medicine.dosage.special_instructions, icon: AlertCircle },
+                { label: t("med_dosage_adult"), value: medicine.dosage.adult, icon: Heart },
+                { label: t("med_dosage_child"), value: medicine.dosage.child, icon: Baby },
+                { label: t("med_dosage_elderly"), value: medicine.dosage.elderly, icon: Stethoscope },
+                { label: t("med_dosage_special"), value: medicine.dosage.special_instructions, icon: AlertCircle },
               ].map((item) => (
                 <div key={item.label} className="p-4 rounded-xl bg-background dark:bg-dark-bg border border-border dark:border-dark-border">
                   <div className="flex items-center gap-2 mb-2">
@@ -151,13 +153,13 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
           <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-6 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
               <AlertTriangle className="w-5 h-5 text-warning" />
-              Side Effects
+              {t("med_side_effects")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <h3 className="text-sm font-semibold text-text-dark dark:text-dark-text mb-2 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-warning" />
-                  Common Side Effects
+                  {t("med_side_common")}
                 </h3>
                 <ul className="space-y-1.5">
                   {medicine.side_effects.common.map((effect) => (
@@ -171,7 +173,7 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
               <div>
                 <h3 className="text-sm font-semibold text-text-dark dark:text-dark-text mb-2 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-danger" />
-                  Serious Side Effects
+                  {t("med_side_serious")}
                 </h3>
                 <ul className="space-y-1.5">
                   {medicine.side_effects.serious.map((effect) => (
@@ -191,15 +193,15 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
           <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-6 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
               <ShieldAlert className="w-5 h-5 text-danger" />
-              Precautions & Warnings
+              {t("med_precautions")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
-                { label: "Pregnancy Warning", value: medicine.precautions.pregnancy, color: "badge-danger" },
-                { label: "Kidney Warning", value: medicine.precautions.kidney, color: "badge-warning" },
-                { label: "Liver Warning", value: medicine.precautions.liver, color: "badge-warning" },
-                { label: "Allergy Warning", value: medicine.precautions.allergy, color: "badge-danger" },
-                { label: "Drug Interactions", value: medicine.precautions.drug_interaction, color: "badge-warning" },
+                { label: t("med_prec_pregnancy"), value: medicine.precautions.pregnancy, color: "badge-danger" },
+                { label: t("med_prec_kidney"), value: medicine.precautions.kidney, color: "badge-warning" },
+                { label: t("med_prec_liver"), value: medicine.precautions.liver, color: "badge-warning" },
+                { label: t("med_prec_allergy"), value: medicine.precautions.allergy, color: "badge-danger" },
+                { label: t("med_prec_interactions"), value: medicine.precautions.drug_interaction, color: "badge-warning" },
               ].map((item) => (
                 <div key={item.label} className="p-3 rounded-xl bg-background dark:bg-dark-bg border border-border dark:border-dark-border">
                   <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium mb-2 ${item.color}`}>
@@ -217,7 +219,7 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
           <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-6 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
               <Ban className="w-5 h-5 text-danger" />
-              Who Should Avoid This Medicine
+              {t("med_avoid")}
             </h2>
             <ul className="space-y-2">
               {medicine.who_should_avoid.map((item) => (
@@ -235,7 +237,7 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
           <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-6 mb-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
               <Warehouse className="w-5 h-5 text-secondary" />
-              Storage Instructions
+              {t("med_storage")}
             </h2>
             <div className="flex flex-wrap gap-3">
               {medicine.storage.map((instruction) => (
@@ -256,7 +258,7 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
             <div className="mb-6">
               <h2 className="flex items-center gap-2 text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
                 <Repeat className="w-5 h-5 text-primary" />
-                Alternative Medicines
+                {t("med_alternatives")}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {alternatives.map((alt, i) => (
@@ -270,9 +272,8 @@ export default function MedicineDetailPage({ params }: { params: Promise<{ id: s
         {/* Disclaimer */}
         <div className="bg-warning/5 border border-warning/20 rounded-xl p-4 text-center">
           <p className="text-xs text-text-light dark:text-dark-text-secondary">
-            <span className="text-warning font-semibold">Medical Disclaimer:</span>{" "}
-            Medi-Solution provides medicine information for educational purposes only.
-            Always consult a registered doctor or healthcare professional before taking any medicine.
+            <span className="text-warning font-semibold">{t("med_disclaimer")}:</span>{" "}
+            {t("med_disclaimer_text")}
           </p>
         </div>
       </div>

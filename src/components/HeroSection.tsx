@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Search, TrendingUp, Pill, Stethoscope, HeartPulse, ShieldCheck } from "lucide-react";
 import { trendingSearches } from "@/lib/data";
+import { useLanguage } from "./LanguageProvider";
 
 export default function HeroSection() {
   const [query, setQuery] = useState("");
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +65,7 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-light text-sm font-medium mb-6"
           >
             <ShieldCheck className="w-4 h-4" />
-            Trusted Medical Information Platform
+            {t("hero_title")}
           </motion.div>
 
           {/* Title */}
@@ -73,10 +75,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold font-[family-name:var(--font-heading)] text-text-dark dark:text-dark-text leading-tight mb-6"
           >
-            Find Trusted Medicine{" "}
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Information Instantly
-            </span>
+            {t("hero_title")}
           </motion.h1>
 
           {/* Subtitle */}
@@ -86,8 +85,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg sm:text-xl text-text-light dark:text-dark-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed"
           >
-            Search medicines, dosage, side effects, prices, and health guidelines
-            from Bangladesh&apos;s leading pharmaceutical companies.
+            {t("hero_subtitle")}
           </motion.p>
 
           {/* Search */}
@@ -106,7 +104,7 @@ export default function HeroSection() {
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search by medicine name, generic name, company, or disease..."
+                  placeholder={t("hero_search_placeholder")}
                   className="flex-1 px-4 py-4 bg-transparent text-text-dark dark:text-dark-text placeholder:text-text-light/60 dark:placeholder:text-dark-text-secondary/60 outline-none text-base"
                 />
                 <button
@@ -128,7 +126,7 @@ export default function HeroSection() {
           >
             <span className="flex items-center gap-1 text-sm text-text-light dark:text-dark-text-secondary">
               <TrendingUp className="w-4 h-4" />
-              Trending:
+              {t("hero_trending")}
             </span>
             {trendingSearches.slice(0, 5).map((term) => (
               <button
@@ -149,10 +147,10 @@ export default function HeroSection() {
             className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-16 max-w-3xl mx-auto"
           >
             {[
-              { label: "Medicines", value: "5000+" },
-              { label: "Companies", value: "200+" },
-              { label: "Categories", value: "50+" },
-              { label: "Daily Users", value: "10K+" },
+              { label: t("hero_stat_medicines"), value: "5000+" },
+              { label: t("hero_stat_companies"), value: "200+" },
+              { label: t("hero_stat_categories"), value: "50+" },
+              { label: t("hero_stat_users"), value: "10K+" },
             ].map((stat) => (
               <div
                 key={stat.label}

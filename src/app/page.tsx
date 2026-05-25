@@ -27,7 +27,9 @@ import HeroSection from "@/components/HeroSection";
 import MedicineCard from "@/components/MedicineCard";
 import Newsletter from "@/components/Newsletter";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { medicines, companies, categories, blogPosts } from "@/lib/data";
+import type { TranslationKey } from "@/lib/translations";
 
 const iconMap: Record<string, React.ElementType> = {
   Shield,
@@ -42,13 +44,13 @@ const iconMap: Record<string, React.ElementType> = {
   Baby,
 };
 
-const features = [
-  { icon: Search, title: "Medicine Search", desc: "Find any medicine instantly with our powerful search engine" },
-  { icon: FileText, title: "Dosage Guidelines", desc: "Detailed dosage instructions for all age groups" },
-  { icon: AlertTriangle, title: "Side Effects", desc: "Comprehensive side effect information and warnings" },
-  { icon: ShieldAlert, title: "Drug Warnings", desc: "Important precautions and drug interaction alerts" },
-  { icon: Building2, title: "Company Info", desc: "Detailed profiles of all pharmaceutical companies" },
-  { icon: BookOpen, title: "Medical Articles", desc: "Expert-written articles on health and medicine safety" },
+const featureKeys: { icon: React.ElementType; titleKey: TranslationKey; descKey: TranslationKey }[] = [
+  { icon: Search, titleKey: "feat_search", descKey: "feat_search_desc" },
+  { icon: FileText, titleKey: "feat_dosage", descKey: "feat_dosage_desc" },
+  { icon: AlertTriangle, titleKey: "feat_side_effects", descKey: "feat_side_effects_desc" },
+  { icon: ShieldAlert, titleKey: "feat_warnings", descKey: "feat_warnings_desc" },
+  { icon: Building2, titleKey: "feat_companies", descKey: "feat_companies_desc" },
+  { icon: BookOpen, titleKey: "feat_articles", descKey: "feat_articles_desc" },
 ];
 
 const testimonials = [
@@ -73,6 +75,8 @@ const testimonials = [
 ];
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   return (
     <>
       {/* Hero */}
@@ -83,28 +87,25 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
-              Everything You Need to{" "}
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Know About Medicine
-              </span>
+              {t("home_features_title")}
             </h2>
             <p className="text-text-light dark:text-dark-text-secondary max-w-2xl mx-auto">
-              Comprehensive medicine information at your fingertips
+              {t("home_features_subtitle")}
             </p>
           </AnimatedSection>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, i) => (
-              <AnimatedSection key={feature.title} delay={i * 0.05}>
+            {featureKeys.map((feature, i) => (
+              <AnimatedSection key={feature.titleKey} delay={i * 0.05}>
                 <div className="premium-card p-6 rounded-2xl bg-background dark:bg-dark-bg border border-border dark:border-dark-border group">
                   <div className="w-12 h-12 rounded-xl medical-gradient flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <feature.icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-2">
-                    {feature.title}
+                    {t(feature.titleKey)}
                   </h3>
                   <p className="text-sm text-text-light dark:text-dark-text-secondary leading-relaxed">
-                    {feature.desc}
+                    {t(feature.descKey)}
                   </p>
                 </div>
               </AnimatedSection>
@@ -119,17 +120,17 @@ export default function HomePage() {
           <AnimatedSection className="flex items-center justify-between mb-10">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-2">
-                Popular Categories
+                {t("home_categories_title")}
               </h2>
               <p className="text-text-light dark:text-dark-text-secondary">
-                Browse medicines by category
+                {t("home_categories_subtitle")}
               </p>
             </div>
             <Link
               href="/medicines"
               className="hidden sm:flex items-center gap-1 text-primary dark:text-primary-light font-medium hover:gap-2 transition-all"
             >
-              View All <ChevronRight className="w-4 h-4" />
+              {t("home_popular_view_all")} <ChevronRight className="w-4 h-4" />
             </Link>
           </AnimatedSection>
 
@@ -147,7 +148,7 @@ export default function HomePage() {
                         {cat.name}
                       </h3>
                       <p className="text-xs text-text-light dark:text-dark-text-secondary">
-                        {cat.count} medicines
+                        {cat.count} {t("company_medicines")}
                       </p>
                     </div>
                   </Link>
@@ -164,17 +165,17 @@ export default function HomePage() {
           <AnimatedSection className="flex items-center justify-between mb-10">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-2">
-                Popular Medicines
+                {t("home_popular_title")}
               </h2>
               <p className="text-text-light dark:text-dark-text-secondary">
-                Most searched medicines in Bangladesh
+                {t("home_popular_subtitle")}
               </p>
             </div>
             <Link
               href="/medicines"
               className="hidden sm:flex items-center gap-1 text-primary dark:text-primary-light font-medium hover:gap-2 transition-all"
             >
-              View All <ChevronRight className="w-4 h-4" />
+              {t("home_popular_view_all")} <ChevronRight className="w-4 h-4" />
             </Link>
           </AnimatedSection>
 
@@ -189,7 +190,7 @@ export default function HomePage() {
               href="/medicines"
               className="inline-flex items-center gap-2 px-6 py-3 medical-gradient text-white font-medium rounded-xl"
             >
-              View All Medicines <ArrowRight className="w-4 h-4" />
+              {t("home_popular_view_all")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -201,17 +202,17 @@ export default function HomePage() {
           <AnimatedSection className="flex items-center justify-between mb-10">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-2">
-                Medical Articles
+                {t("home_articles_title")}
               </h2>
               <p className="text-text-light dark:text-dark-text-secondary">
-                Expert health tips and medicine safety guides
+                {t("home_articles_subtitle")}
               </p>
             </div>
             <Link
               href="/blog"
               className="hidden sm:flex items-center gap-1 text-primary dark:text-primary-light font-medium hover:gap-2 transition-all"
             >
-              All Articles <ChevronRight className="w-4 h-4" />
+              {t("home_articles_view_all")} <ChevronRight className="w-4 h-4" />
             </Link>
           </AnimatedSection>
 
@@ -256,10 +257,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
-              Trusted Pharmaceutical Companies
+              {t("home_companies_title")}
             </h2>
             <p className="text-text-light dark:text-dark-text-secondary max-w-2xl mx-auto">
-              Medicines from Bangladesh&apos;s leading and most trusted pharmaceutical manufacturers
+              {t("home_companies_subtitle")}
             </p>
           </AnimatedSection>
 
@@ -275,7 +276,7 @@ export default function HomePage() {
                       {company.name}
                     </h3>
                     <p className="text-xs text-text-light dark:text-dark-text-secondary">
-                      {company.total_medicines} medicines
+                      {company.total_medicines} {t("company_medicines")}
                     </p>
                   </div>
                 </Link>
@@ -290,32 +291,32 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
-              What Healthcare Professionals Say
+              {t("home_testimonials_title")}
             </h2>
             <p className="text-text-light dark:text-dark-text-secondary">
-              Trusted by doctors, pharmacists, and medical students
+              {t("home_testimonials_subtitle")}
             </p>
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
+            {testimonials.map((item, i) => (
               <AnimatedSection key={i} delay={i * 0.1}>
                 <div className="premium-card p-6 rounded-2xl bg-card dark:bg-dark-card border border-border dark:border-dark-border h-full">
                   <Quote className="w-8 h-8 text-primary/20 dark:text-primary-light/20 mb-4" />
                   <p className="text-text-light dark:text-dark-text-secondary text-sm leading-relaxed mb-5">
-                    &ldquo;{t.text}&rdquo;
+                    &ldquo;{item.text}&rdquo;
                   </p>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full medical-gradient flex items-center justify-center text-white font-bold text-sm">
-                      {t.name[0]}
+                      {item.name[0]}
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-text-dark dark:text-dark-text">{t.name}</div>
-                      <div className="text-xs text-text-light dark:text-dark-text-secondary">{t.role}</div>
+                      <div className="text-sm font-semibold text-text-dark dark:text-dark-text">{item.name}</div>
+                      <div className="text-xs text-text-light dark:text-dark-text-secondary">{item.role}</div>
                     </div>
                   </div>
                   <div className="flex gap-1 mt-3">
-                    {Array.from({ length: t.rating }).map((_, idx) => (
+                    {Array.from({ length: item.rating }).map((_, idx) => (
                       <Star key={idx} className="w-4 h-4 fill-warning text-warning" />
                     ))}
                   </div>

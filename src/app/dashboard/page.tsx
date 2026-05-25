@@ -4,10 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { Heart, History, Bell, Pill, Clock, Trash2, Plus } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { medicines } from "@/lib/data";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"favorites" | "history" | "reminders">("favorites");
+  const { t } = useLanguage();
   const [favorites, setFavorites] = useState(medicines.slice(0, 3).map((m) => m.id));
   const [reminders, setReminders] = useState([
     { id: "1", medicine: "Napa Extra", time: "08:00 AM", frequency: "Daily", active: true },
@@ -27,9 +29,9 @@ export default function DashboardPage() {
   };
 
   const tabs = [
-    { key: "favorites" as const, label: "Favorites", icon: Heart, count: favoriteMedicines.length },
-    { key: "history" as const, label: "History", icon: History, count: historyMedicines.length },
-    { key: "reminders" as const, label: "Reminders", icon: Bell, count: reminders.length },
+    { key: "favorites" as const, label: t("dash_favorites"), icon: Heart, count: favoriteMedicines.length },
+    { key: "history" as const, label: t("dash_history"), icon: History, count: historyMedicines.length },
+    { key: "reminders" as const, label: t("dash_reminders"), icon: Bell, count: reminders.length },
   ];
 
   return (
@@ -39,10 +41,10 @@ export default function DashboardPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <AnimatedSection className="mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-2">
-              My Dashboard
+              {t("dash_title")}
             </h1>
             <p className="text-text-light dark:text-dark-text-secondary">
-              Manage your saved medicines, history, and reminders
+              {t("dash_subtitle")}
             </p>
           </AnimatedSection>
 
@@ -97,10 +99,10 @@ export default function DashboardPage() {
               ) : (
                 <div className="text-center py-16 bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border">
                   <Heart className="w-12 h-12 text-text-light/20 mx-auto mb-3" />
-                  <p className="text-text-light dark:text-dark-text-secondary mb-4">No favorite medicines yet</p>
+                  <p className="text-text-light dark:text-dark-text-secondary mb-4">{t("dash_no_favorites")}</p>
                   <Link href="/medicines" className="inline-flex items-center gap-2 px-5 py-2.5 medical-gradient text-white font-medium rounded-xl text-sm">
                     <Plus className="w-4 h-4" />
-                    Browse Medicines
+                    {t("dash_browse")}
                   </Link>
                 </div>
               )}
@@ -124,7 +126,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="text-xs text-text-light dark:text-dark-text-secondary flex items-center gap-1 shrink-0">
                       <Clock className="w-3 h-3" />
-                      {i === 0 ? "Just now" : i === 1 ? "1 hour ago" : `${i} hours ago`}
+                      {i === 0 ? t("dash_just_now") : i === 1 ? t("dash_hour_ago") : `${i} ${t("dash_hours_ago")}`}
                     </div>
                   </div>
                 ))}

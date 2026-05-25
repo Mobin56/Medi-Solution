@@ -5,11 +5,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, User, BookOpen } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { getBlogBySlug, blogPosts } from "@/lib/data";
 
 export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const post = getBlogBySlug(slug);
+  const { t } = useLanguage();
 
   if (!post) {
     notFound();
@@ -25,7 +27,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           className="inline-flex items-center gap-2 text-sm text-text-light dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary-light transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Blog
+          {t("blog_back")}
         </Link>
 
         <AnimatedSection>
@@ -106,7 +108,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           <AnimatedSection delay={0.2}>
             <div className="mt-12 pt-8 border-t border-border dark:border-dark-border">
               <h2 className="text-xl font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-6">
-                Related Articles
+                {t("blog_related")}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {relatedPosts.map((related) => (

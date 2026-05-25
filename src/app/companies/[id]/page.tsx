@@ -6,11 +6,13 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Building2, MapPin, Calendar, Pill } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import MedicineCard from "@/components/MedicineCard";
+import { useLanguage } from "@/components/LanguageProvider";
 import { getCompanyById, getMedicinesByCompany } from "@/lib/data";
 
 export default function CompanyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const company = getCompanyById(id);
+  const { t } = useLanguage();
 
   if (!company) {
     notFound();
@@ -26,7 +28,7 @@ export default function CompanyDetailPage({ params }: { params: Promise<{ id: st
           className="inline-flex items-center gap-2 text-sm text-text-light dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary-light transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Companies
+          {t("company_back")}
         </Link>
 
         {/* Company Profile */}
@@ -43,7 +45,7 @@ export default function CompanyDetailPage({ params }: { params: Promise<{ id: st
                 <div className="flex flex-wrap items-center gap-4 text-sm text-text-light dark:text-dark-text-secondary mb-4">
                   <span className="flex items-center gap-1.5">
                     <Calendar className="w-4 h-4" />
-                    Founded: {company.founded}
+                    {t("company_founded")}: {company.founded}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <MapPin className="w-4 h-4" />
@@ -51,7 +53,7 @@ export default function CompanyDetailPage({ params }: { params: Promise<{ id: st
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Pill className="w-4 h-4" />
-                    {company.total_medicines} medicines
+                    {company.total_medicines} {t("company_medicines")}
                   </span>
                 </div>
                 <p className="text-text-light dark:text-dark-text-secondary leading-relaxed mb-4">
@@ -76,7 +78,7 @@ export default function CompanyDetailPage({ params }: { params: Promise<{ id: st
         {company.popular_products.length > 0 && (
           <AnimatedSection delay={0.1}>
             <h2 className="text-xl font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
-              Popular Products
+              {t("company_popular")}
             </h2>
             <div className="flex flex-wrap gap-2 mb-8">
               {company.popular_products.map((product) => (
@@ -94,7 +96,7 @@ export default function CompanyDetailPage({ params }: { params: Promise<{ id: st
         {/* Company Medicines */}
         <AnimatedSection delay={0.15}>
           <h2 className="text-xl font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
-            Medicines by {company.name} ({companyMedicines.length})
+            {t("company_medicines_by")} {company.name} ({companyMedicines.length})
           </h2>
           {companyMedicines.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -106,7 +108,7 @@ export default function CompanyDetailPage({ params }: { params: Promise<{ id: st
             <div className="text-center py-12 bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border">
               <Pill className="w-12 h-12 text-text-light/30 mx-auto mb-3" />
               <p className="text-text-light dark:text-dark-text-secondary">
-                No medicines found for this company in our database yet.
+                {t("company_no_medicines")}
               </p>
             </div>
           )}

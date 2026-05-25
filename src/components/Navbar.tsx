@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
+import { useLanguage } from "./LanguageProvider";
 import {
   Menu,
   X,
@@ -16,20 +17,23 @@ import {
   LayoutDashboard,
   Scale,
   Shield,
+  Languages,
 } from "lucide-react";
+import type { TranslationKey } from "@/lib/translations";
 
-const navLinks = [
-  { href: "/", label: "Home", icon: Pill },
-  { href: "/medicines", label: "Medicines", icon: Search },
-  { href: "/companies", label: "Companies", icon: Building2 },
-  { href: "/blog", label: "Blog", icon: BookOpen },
-  { href: "/compare", label: "Compare", icon: Scale },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+const navLinks: { href: string; labelKey: TranslationKey; icon: typeof Pill }[] = [
+  { href: "/", labelKey: "nav_home", icon: Pill },
+  { href: "/medicines", labelKey: "nav_medicines", icon: Search },
+  { href: "/companies", labelKey: "nav_companies", icon: Building2 },
+  { href: "/blog", labelKey: "nav_blog", icon: BookOpen },
+  { href: "/compare", labelKey: "nav_compare", icon: Scale },
+  { href: "/dashboard", labelKey: "nav_dashboard", icon: LayoutDashboard },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { locale, toggleLocale, t } = useLanguage();
 
   return (
     <nav className="sticky top-0 z-50 glass">
@@ -45,7 +49,7 @@ export default function Navbar() {
                 Medi-Solution
               </span>
               <span className="hidden sm:block text-[10px] text-text-light dark:text-dark-text-secondary leading-none -mt-0.5">
-                Your Trusted Digital Medicine Guide
+                {locale === "bn" ? "আপনার বিশ্বস্ত ডিজিটাল ওষুধ গাইড" : "Your Trusted Digital Medicine Guide"}
               </span>
             </div>
           </Link>
@@ -59,13 +63,23 @@ export default function Navbar() {
                 className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-light dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary-light rounded-lg hover:bg-primary/5 transition-colors"
               >
                 <link.icon className="w-4 h-4" />
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             ))}
           </div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLocale}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-card transition-colors text-sm font-medium text-text-light dark:text-dark-text-secondary"
+              aria-label="Toggle language"
+            >
+              <Languages className="w-4 h-4" />
+              <span className="text-xs font-bold">{locale === "en" ? "বাং" : "EN"}</span>
+            </button>
+
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-card transition-colors"
@@ -83,7 +97,7 @@ export default function Navbar() {
               className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white medical-gradient rounded-lg hover:opacity-90 transition-opacity"
             >
               <Shield className="w-4 h-4" />
-              Admin
+              {t("nav_admin")}
             </Link>
 
             <button
@@ -119,7 +133,7 @@ export default function Navbar() {
                   className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-text-light dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary-light rounded-lg hover:bg-primary/5 transition-colors"
                 >
                   <link.icon className="w-4 h-4" />
-                  {link.label}
+                  {t(link.labelKey)}
                 </Link>
               ))}
               <Link
@@ -128,7 +142,7 @@ export default function Navbar() {
                 className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white medical-gradient rounded-lg"
               >
                 <Shield className="w-4 h-4" />
-                Admin Panel
+                {t("nav_admin")}
               </Link>
             </div>
           </motion.div>

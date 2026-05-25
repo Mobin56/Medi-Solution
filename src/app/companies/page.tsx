@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { Building2, MapPin, Calendar, ChevronRight, Pill } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { companies } from "@/lib/data";
 
 export default function CompaniesPage() {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen">
       <section className="relative py-12 sm:py-16 overflow-hidden">
@@ -13,10 +16,10 @@ export default function CompaniesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <AnimatedSection className="text-center mb-12">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
-              Pharmaceutical Companies
+              {t("companies_title")}
             </h1>
             <p className="text-text-light dark:text-dark-text-secondary max-w-2xl mx-auto">
-              Browse medicines from Bangladesh&apos;s leading and most trusted pharmaceutical manufacturers
+              {t("companies_subtitle")}
             </p>
           </AnimatedSection>
 
@@ -66,10 +69,10 @@ export default function CompaniesPage() {
                     <div className="flex items-center justify-between pt-3 border-t border-border dark:border-dark-border">
                       <span className="flex items-center gap-1.5 text-sm text-text-light dark:text-dark-text-secondary">
                         <Pill className="w-4 h-4" />
-                        {company.total_medicines} medicines
+                        {company.total_medicines} {t("company_medicines")}
                       </span>
                       <span className="flex items-center gap-1 text-sm text-primary dark:text-primary-light font-medium group-hover:gap-2 transition-all">
-                        View Profile <ChevronRight className="w-4 h-4" />
+                        {t("company_view")} <ChevronRight className="w-4 h-4" />
                       </span>
                     </div>
                   </div>

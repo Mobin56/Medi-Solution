@@ -18,6 +18,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { medicines, companies, blogPosts } from "@/lib/data";
 
 type Tab = "overview" | "medicines" | "companies" | "blog";
@@ -38,13 +39,14 @@ const recentSearches = [
 ];
 
 export default function AdminPage() {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   const sidebarItems = [
-    { key: "overview" as const, label: "Dashboard", icon: LayoutDashboard },
-    { key: "medicines" as const, label: "Medicines", icon: Pill },
-    { key: "companies" as const, label: "Companies", icon: Building2 },
-    { key: "blog" as const, label: "Blog Posts", icon: FileText },
+    { key: "overview" as const, label: t("admin_overview"), icon: LayoutDashboard },
+    { key: "medicines" as const, label: t("admin_medicines"), icon: Pill },
+    { key: "companies" as const, label: t("admin_companies"), icon: Building2 },
+    { key: "blog" as const, label: t("admin_blog"), icon: FileText },
   ];
 
   return (
@@ -52,10 +54,10 @@ export default function AdminPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <AnimatedSection className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-1">
-            Admin Dashboard
+            {t("admin_title")}
           </h1>
           <p className="text-text-light dark:text-dark-text-secondary text-sm">
-            Manage medicines, companies, and content
+            {t("admin_subtitle")}
           </p>
         </AnimatedSection>
 
@@ -110,7 +112,7 @@ export default function AdminPage() {
                   <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-5">
                     <h3 className="flex items-center gap-2 text-base font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
                       <Search className="w-4 h-4 text-primary" />
-                      Top Searches
+                      {t("admin_top_searches")}
                     </h3>
                     <div className="space-y-3">
                       {recentSearches.map((search, i) => (
@@ -121,7 +123,7 @@ export default function AdminPage() {
                             </span>
                             <span className="text-sm text-text-dark dark:text-dark-text">{search.query}</span>
                           </div>
-                          <span className="text-xs text-text-light dark:text-dark-text-secondary">{search.count} searches</span>
+                          <span className="text-xs text-text-light dark:text-dark-text-secondary">{search.count} {t("admin_searches")}</span>
                         </div>
                       ))}
                     </div>
@@ -130,14 +132,14 @@ export default function AdminPage() {
                   <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border p-5">
                     <h3 className="flex items-center gap-2 text-base font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-4">
                       <BarChart3 className="w-4 h-4 text-primary" />
-                      Quick Actions
+                      {t("admin_quick_actions")}
                     </h3>
                     <div className="space-y-2">
                       {[
-                        { label: "Add New Medicine", icon: Plus, action: () => setActiveTab("medicines") },
-                        { label: "Manage Companies", icon: Building2, action: () => setActiveTab("companies") },
-                        { label: "Write Blog Post", icon: FileText, action: () => setActiveTab("blog") },
-                        { label: "Settings", icon: Settings, action: () => {} },
+                        { label: t("admin_add_medicine"), icon: Plus, action: () => setActiveTab("medicines") },
+                        { label: t("admin_manage_companies"), icon: Building2, action: () => setActiveTab("companies") },
+                        { label: t("admin_write_blog"), icon: FileText, action: () => setActiveTab("blog") },
+                        { label: t("admin_settings"), icon: Settings, action: () => {} },
                       ].map((item) => (
                         <button
                           key={item.label}
@@ -162,11 +164,11 @@ export default function AdminPage() {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)]">
-                    Manage Medicines ({medicines.length})
+                    {t("admin_manage_medicines")} ({medicines.length})
                   </h2>
                   <button className="flex items-center gap-2 px-4 py-2.5 medical-gradient text-white font-medium rounded-xl text-sm">
                     <Plus className="w-4 h-4" />
-                    Add Medicine
+                    {t("admin_add")}
                   </button>
                 </div>
                 <div className="bg-card dark:bg-dark-card rounded-2xl border border-border dark:border-dark-border overflow-hidden">
@@ -174,11 +176,11 @@ export default function AdminPage() {
                     <table className="w-full">
                       <thead>
                         <tr className="bg-background dark:bg-dark-bg border-b border-border dark:border-dark-border">
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">Name</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">Generic</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">Company</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">Price</th>
-                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">Actions</th>
+                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">{t("admin_name")}</th>
+                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">{t("admin_generic")}</th>
+                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">{t("admin_company")}</th>
+                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">{t("admin_price")}</th>
+                          <th className="text-left px-5 py-3 text-xs font-semibold text-text-light dark:text-dark-text-secondary uppercase">{t("admin_actions")}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border dark:divide-dark-border">
@@ -217,11 +219,11 @@ export default function AdminPage() {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)]">
-                    Manage Companies ({companies.length})
+                    {t("admin_manage_companies")} ({companies.length})
                   </h2>
                   <button className="flex items-center gap-2 px-4 py-2.5 medical-gradient text-white font-medium rounded-xl text-sm">
                     <Plus className="w-4 h-4" />
-                    Add Company
+                    {t("admin_add_company")}
                   </button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -253,11 +255,11 @@ export default function AdminPage() {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)]">
-                    Manage Blog Posts ({blogPosts.length})
+                    {t("admin_manage_blog")} ({blogPosts.length})
                   </h2>
                   <button className="flex items-center gap-2 px-4 py-2.5 medical-gradient text-white font-medium rounded-xl text-sm">
                     <Plus className="w-4 h-4" />
-                    New Post
+                    {t("admin_new_post")}
                   </button>
                 </div>
                 <div className="space-y-3">

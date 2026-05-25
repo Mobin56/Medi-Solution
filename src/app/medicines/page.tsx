@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Search, Filter, X, SlidersHorizontal } from "lucide-react";
 import MedicineCard from "@/components/MedicineCard";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from "@/components/LanguageProvider";
 import { medicines, categories } from "@/lib/data";
 
 const medicineTypes = ["All", "Tablet", "Capsule", "Syrup", "Injection", "Cream", "Drops", "Inhaler"];
@@ -22,6 +23,7 @@ function MedicinesContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const initialCategory = searchParams.get("category") || "";
+  const { t } = useLanguage();
 
   const [query, setQuery] = useState(initialQuery);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
@@ -62,10 +64,10 @@ function MedicinesContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <AnimatedSection className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-3">
-              Search Medicines
+              {t("medicines_title")}
             </h1>
             <p className="text-text-light dark:text-dark-text-secondary max-w-2xl mx-auto">
-              Find detailed information about medicines from Bangladesh&apos;s pharmaceutical companies
+              {t("medicines_subtitle")}
             </p>
           </AnimatedSection>
 
@@ -77,7 +79,7 @@ function MedicinesContent() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by medicine name, generic name, company..."
+                placeholder={t("medicines_search_placeholder")}
                 className="flex-1 px-4 py-4 bg-transparent text-text-dark dark:text-dark-text placeholder:text-text-light/60 dark:placeholder:text-dark-text-secondary/60 outline-none"
               />
               {query && (
@@ -103,7 +105,7 @@ function MedicinesContent() {
             >
               <div className="bg-card dark:bg-dark-card rounded-xl border border-border dark:border-dark-border p-4 space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-text-dark dark:text-dark-text mb-2 block">Category</label>
+                  <label className="text-sm font-medium text-text-dark dark:text-dark-text mb-2 block">{t("medicines_category")}</label>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setSelectedCategory("")}
@@ -113,7 +115,7 @@ function MedicinesContent() {
                           : "bg-gray-100 dark:bg-dark-border text-text-light dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-dark-border/80"
                       }`}
                     >
-                      All
+                      {t("medicines_all")}
                     </button>
                     {categories.map((cat) => (
                       <button
@@ -131,7 +133,7 @@ function MedicinesContent() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-text-dark dark:text-dark-text mb-2 block">Type</label>
+                  <label className="text-sm font-medium text-text-dark dark:text-dark-text mb-2 block">{t("medicines_type")}</label>
                   <div className="flex flex-wrap gap-2">
                     {medicineTypes.map((type) => (
                       <button
@@ -159,10 +161,10 @@ function MedicinesContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm text-text-light dark:text-dark-text-secondary">
-              Showing <span className="font-semibold text-text-dark dark:text-dark-text">{filtered.length}</span> medicines
+              <span className="font-semibold text-text-dark dark:text-dark-text">{filtered.length}</span> {t("medicines_results")}
               {hasFilters && (
                 <button onClick={clearFilters} className="ml-3 text-primary dark:text-primary-light hover:underline">
-                  Clear filters
+                  {t("medicines_clear")}
                 </button>
               )}
             </p>
@@ -178,16 +180,16 @@ function MedicinesContent() {
             <div className="text-center py-20">
               <Filter className="w-16 h-16 text-text-light/30 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-text-dark dark:text-dark-text font-[family-name:var(--font-heading)] mb-2">
-                No medicines found
+                {t("medicines_no_results")}
               </h3>
               <p className="text-text-light dark:text-dark-text-secondary mb-4">
-                Try adjusting your search or filter criteria
+                {t("medicines_no_results_desc")}
               </p>
               <button
                 onClick={clearFilters}
                 className="px-6 py-2.5 medical-gradient text-white font-medium rounded-xl hover:opacity-90 transition-opacity"
               >
-                Clear All Filters
+                {t("medicines_clear_filters")}
               </button>
             </div>
           )}
