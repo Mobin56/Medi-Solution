@@ -3,13 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "./ThemeProvider";
 import { useLanguage } from "./LanguageProvider";
 import {
   Menu,
   X,
-  Sun,
-  Moon,
   Search,
   Pill,
   Building2,
@@ -32,7 +29,6 @@ const navLinks: { href: string; labelKey: TranslationKey; icon: typeof Pill }[] 
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
   const { locale, toggleLocale, t } = useLanguage();
 
   return (
@@ -78,18 +74,6 @@ export default function Navbar() {
             >
               <Languages className="w-4 h-4" />
               <span className="text-xs font-bold">{locale === "en" ? "বাং" : "EN"}</span>
-            </button>
-
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-card transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? (
-                <Moon className="w-5 h-5 text-text-light" />
-              ) : (
-                <Sun className="w-5 h-5 text-yellow-400" />
-              )}
             </button>
 
             <Link
